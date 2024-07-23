@@ -10,7 +10,7 @@ const getDetailLesson = async (
   supabase: SupabaseClient<Database>
 ) => {
   const { data: lesson } = await supabase
-    .from("video_sales_ec")
+    .from("video")
     .select("*")
     .eq("id", id)
     .single();

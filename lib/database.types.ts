@@ -9,23 +9,52 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      video_sales_ec: {
+      profile: {
+        Row: {
+          created_at: string
+          id: string
+          interval: string | null
+          is_subscribed: boolean | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          interval?: string | null
+          is_subscribed?: boolean | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          interval?: string | null
+          is_subscribed?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profile_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      video: {
         Row: {
           created_at: string
           description: string | null
-          id: number
+          id: string
           title: string | null
         }
         Insert: {
           created_at?: string
           description?: string | null
-          id?: number
+          id?: string
           title?: string | null
         }
         Update: {
           created_at?: string
           description?: string | null
-          id?: number
+          id?: string
           title?: string | null
         }
         Relationships: []

@@ -14,12 +14,14 @@ import { Database } from "@/lib/database.types";
 const supabase = createServerComponentClient<Database>({ cookies });
 
 const getAllLessons = async () => {
-  const { data: lessons } = await supabase.from("video_sales_ec").select("*");
+  const { data: lessons } = await supabase.from("video").select("*");
+  console.log(lessons);
   return lessons;
 };
 
 export default async function Home() {
   const lessons = await getAllLessons();
+
   return (
     <main className="w-full max-w-3xl mx-auto my-16">
       <div className="flex flex-col gap-3">
@@ -31,7 +33,9 @@ export default async function Home() {
                 {/* <CardDescription>Card Description</CardDescription> */}
               </CardHeader>
               <CardContent>
-                <p>{lesson.description}</p>
+                <p className="whitespace-pre-wrap break-words">
+                  {lesson.description}
+                </p>
               </CardContent>
             </Card>
           </Link>
