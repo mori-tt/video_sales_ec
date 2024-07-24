@@ -12,21 +12,27 @@ export type Database = {
       profile: {
         Row: {
           created_at: string
+          email: string | null
           id: string
           interval: string | null
           is_subscribed: boolean | null
+          stripe_customer: string | null
         }
         Insert: {
           created_at?: string
+          email?: string | null
           id?: string
           interval?: string | null
           is_subscribed?: boolean | null
+          stripe_customer?: string | null
         }
         Update: {
           created_at?: string
+          email?: string | null
           id?: string
           interval?: string | null
           is_subscribed?: boolean | null
+          stripe_customer?: string | null
         }
         Relationships: [
           {

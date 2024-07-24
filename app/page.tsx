@@ -15,7 +15,6 @@ const supabase = createServerComponentClient<Database>({ cookies });
 
 const getAllLessons = async () => {
   const { data: lessons } = await supabase.from("video").select("*");
-  console.log(lessons);
   return lessons;
 };
 
