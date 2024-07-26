@@ -16,6 +16,7 @@ import {
 import { Database } from "@/lib/database.types";
 import SubscriptionButton from "@/components/checkout/SubscriptionButton";
 import AuthServerButton from "@/components/auth/AuthServerButton";
+import Link from "next/link";
 
 interface Plan {
   id: string;
@@ -66,11 +67,9 @@ const PricingPage = async () => {
     await getProfileData(supabase),
   ]);
 
-  const showSubscribeButton =
-    !!user.session && profile && !profile.is_subscribed;
+  const showSubscribeButton = !!user.session && !profile?.is_subscribed;
   const showCreateAccountButton = !user.session;
-  const showManageSubscriptionButton =
-    !!user.session && profile && profile.is_subscribed;
+  const showManageSubscriptionButton = !!user.session && profile?.is_subscribed;
 
   return (
     <div className="w-full max-w-3xl mx-auto py-16 flex justify-around">
@@ -88,7 +87,9 @@ const PricingPage = async () => {
               {showSubscribeButton && <SubscriptionButton planId={plan.id} />}
               {showCreateAccountButton && <AuthServerButton />}
               {showManageSubscriptionButton && (
-                <Button>Subscription Management</Button>
+                <Button>
+                  <Link href="/dashboard">Subscription Management</Link>
+                </Button>
               )}
             </CardFooter>
           </Card>

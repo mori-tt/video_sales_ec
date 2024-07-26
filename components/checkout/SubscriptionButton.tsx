@@ -6,11 +6,16 @@ import { Button } from "../ui/button";
 function SubscriptionButton({ planId }: { planId: string }) {
   const processSubscription = async () => {
     const response = await fetch(
-      `http://localhost:3000/api/subscription/${planId}`
+      `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/subscription/${planId}`
     );
 
-    const data = await response.json();
+    if (!response.ok) {
+      console.error("Failed to create subscription session");
+      return;
+    }
 
+    const data = await response.json();
+    console.log(data);
     const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY!);
     await stripe?.redirectToCheckout({ sessionId: data.id });
   };

@@ -3,10 +3,7 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import initStripe from "stripe";
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { priceId: string } }
-) {
+export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
   const { data } = await supabase.auth.getUser();
   const user = data.user;
@@ -21,24 +18,12 @@ export async function GET(
     .eq("id", user?.id)
     .single();
 
-  if (!stripe_customer_data) {
-    return NextResponse.json("Stripe customer not found", { status: 404 });
-  }
-
-  const priceId = params.priceId;
-
   const stripe = new initStripe(process.env.STRIPE_SECRET_KEY!);
 
-  const session = await stripe.checkout.sessions.create({
+  const session = await stripe.billingPortal.sessions.create({
     customer: stripe_customer_data?.stripe_customer,
-    mode: "subscription",
-    payment_method_types: ["card"],
-    line_items: [{ price: priceId, quantity: 1 }],
-    success_url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/payment/success`,
-    cancel_url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/payment/canceled`,
+    return_url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/dashboard`,
   });
 
-  return NextResponse.json({ id: session.id });
+  return NextResponse.json({ url: session.url });
 }
-
-export async function POST(req: NextRequest, res: NextResponse) {}

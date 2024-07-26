@@ -1,5 +1,5 @@
-const Cancelled = () => {
+const Canceled = () => {
   return <div>お支払いがキャンセルされました</div>;
 };
 
-export default Cancelled;
+export default Canceled;
