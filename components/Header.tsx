@@ -1,11 +1,10 @@
 import { Button } from "./ui/button";
 import Link from "next/link";
 import AuthServerButton from "./auth/AuthServerButton";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { supabaseServer } from "@/lib/supabaseServer";
 
 const Header = async () => {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = supabaseServer();
   const { data: user } = await supabase.auth.getSession();
   return (
     <div className="flex py-4 px-6 border-b border-gray-200">

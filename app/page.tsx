@@ -1,25 +1,17 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { SupabaseClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { supabaseServer } from "@/lib/supabaseServer";
 import { Database } from "@/lib/database.types";
 
-const supabase = createServerComponentClient<Database>({ cookies });
-
-const getAllLessons = async () => {
+const getAllLessons = async (supabase: SupabaseClient<Database>) => {
   const { data: lessons } = await supabase.from("video").select("*");
   return lessons;
 };
 
 export default async function Home() {
-  const lessons = await getAllLessons();
+  const supabase = supabaseServer();
+  const lessons = await getAllLessons(supabase);
 
   return (
     <main className="w-full max-w-3xl mx-auto my-16">
@@ -29,7 +21,6 @@ export default async function Home() {
             <Card>
               <CardHeader>
                 <CardTitle>{lesson.title}</CardTitle>
-                {/* <CardDescription>Card Description</CardDescription> */}
               </CardHeader>
               <CardContent>
                 <p className="whitespace-pre-wrap break-words">

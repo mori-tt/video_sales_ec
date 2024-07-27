@@ -1,11 +1,8 @@
 import { Database } from "@/lib/database.types";
-import {
-  SupabaseClient,
-  createServerComponentClient,
-} from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { SupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { YouTubeEmbed } from "@next/third-parties/google";
 import { extractYouTubeVideoId } from "@/utills/extractYoutubeVideoId";
+import { supabaseServer } from "@/lib/supabaseServer";
 
 const getDetailLesson = async (
   id: number,
@@ -32,12 +29,11 @@ const getPremiumContent = async (
 };
 
 const LessonDetailPage = async ({ params }: { params: { id: number } }) => {
-  const supabase = createServerComponentClient<Database>({ cookies });
+  const supabase = supabaseServer();
   const [lesson, video] = await Promise.all([
     await getDetailLesson(params.id, supabase),
     await getPremiumContent(params.id, supabase),
   ]);
-  // const videoId = extractYouTubeVideoId(video?.video_url) as string;
   const videoId = video?.video_url
     ? (extractYouTubeVideoId(video.video_url) as string)
     : "";
