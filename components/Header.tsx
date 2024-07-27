@@ -1,4 +1,5 @@
-import React from "react";
+export const dynamic = "force-dynamic";
+
 import { Button } from "./ui/button";
 import Link from "next/link";
 import AuthServerButton from "./auth/AuthServerButton";
